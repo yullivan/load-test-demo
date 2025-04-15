@@ -1,0 +1,25 @@
+# Ignore database files and folders
+/db/
+
+# Node.js dependencies
+node_modules/
+.next/
+out/
+.npm
+*.log
+npm-debug.log*
+
+# Gradle
+.gradle/
+build/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS generated files
+.DS_Store
+Thumbs.db
