@@ -32,7 +32,7 @@ services:
     working_dir: /app/spring-boot-app
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/mydb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/loadtestdemodb
       - SPRING_DATASOURCE_USERNAME=user
       - SPRING_DATASOURCE_PASSWORD=password
       - TZ=Asia/Seoul
