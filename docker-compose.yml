@@ -14,6 +14,7 @@ services:
     environment:
       - NODE_ENV=development
       - TZ=Asia/Seoul
+      - NEXT_PUBLIC_API_URL=http://backend:8080/api
     command: bash -c "npm install && npm run dev"
     depends_on:
       - backend
@@ -59,3 +60,35 @@ services:
       - "max_connections=100"
       - "-c"
       - "client_encoding=UTF8"
+
+  k6:
+    image: grafana/k6
+    container_name: k6-load-tester
+    volumes:
+      - ./k6-scripts:/scripts
+    environment:
+      - K6_OUT=influxdb=http://influxdb:8086/k6
+    depends_on:
+      - backend
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["tail -f /dev/null"]
+    # 테스트 실행 시에는 다음과 같이 실행: docker exec -it k6-load-tester k6 run /scripts/load-test.js
+
+  influxdb:
+    image: influxdb:1.8
+    container_name: k6-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=k6
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: k6-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    depends_on:
+      - influxdb
